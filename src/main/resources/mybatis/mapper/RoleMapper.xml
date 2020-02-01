@@ -6,7 +6,7 @@
         select role.id,role.name from user_role inner join role on user_role.role_id = role.id where user_id = #{userId};
     </select>
  
-    <insert id="addRoleAndUseId">
+    <insert id="addUserIdAndRoleId">
          insert user_role (user_id,role_id) values (#{userId},#{roleId})
     </insert>
 </mapper>

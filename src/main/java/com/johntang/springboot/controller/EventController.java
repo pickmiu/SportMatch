@@ -46,7 +46,7 @@ public class EventController {
 	//总赛事管理员审核赛事
 	@PostMapping("/fe_admin/reviewEvent")
 	public BackFrontMessage reviewEvent(@RequestParam Integer eventId,Integer available,String comment) {
-		if(eventService.reviewEvent(eventId, available, comment) == 1) {
+		if(eventService.reviewEvent(eventId, available) == 1) {
 			return new BackFrontMessage(200, "修改成功", null);
 		}else {
 			return new BackFrontMessage(200, "修改失败", null);

@@ -1,5 +1,6 @@
 package com.johntang.springboot.service;
 
+import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,10 +18,10 @@ import org.thymeleaf.context.Context;
 @Service
 public class MailService {
 	
-	@Autowired
+	@Resource
 	private JavaMailSender javaMailSender;
 	
-	@Autowired
+	@Resource
 	private TemplateEngine templateEngine;
 	
 	/**
@@ -55,10 +56,10 @@ public class MailService {
 	
 	public void sendIdentityCode(String mailAddress,String operation,int code) {
 		try {
-			Context templatecContext = new Context();
-			templatecContext.setVariable("operation",operation);
-			templatecContext.setVariable("code", code);
-			String finaMail = templateEngine.process("mail_IdentityCode", templatecContext);
+			Context templateContext = new Context();
+			templateContext.setVariable("operation",operation);
+			templateContext.setVariable("code", code);
+			String finaMail = templateEngine.process("mail_IdentityCode", templateContext);
 			this.sendHtmlMail("hellosmartofme@163.com", mailAddress, "smartofme-验证邮件", finaMail);
 			System.out.println("code="+code);
 		} catch (Exception e) {

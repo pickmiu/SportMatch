@@ -14,6 +14,7 @@ import com.johntang.springboot.mapper.UserMapper;
 
 @Service
 public class UserService {
+	
 	@Autowired
 	private UserMapper userMapper;
 	

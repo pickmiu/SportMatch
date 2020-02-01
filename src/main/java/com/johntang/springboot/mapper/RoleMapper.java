@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.johntang.springboot.pojo.Role;
+import org.springframework.stereotype.Component;
 
 /**
  * @Description mybatis框架下角色（权限）相关功能的mysql数据库持久化接口
@@ -12,6 +13,7 @@ import com.johntang.springboot.pojo.Role;
  * @LatestChangeDate 2020年2月1日
  */
 
+@Component
 @Mapper
 public interface RoleMapper {
 	

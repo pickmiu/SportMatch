@@ -2,11 +2,11 @@ package com.johntang.springboot.service;
 
 import java.util.List;
 
+import com.johntang.springboot.mapper.RoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.johntang.springboot.mapper.EventMapper;
-import com.johntang.springboot.mapper.RoleMapper;
 import com.johntang.springboot.pojo.Event;
 import com.johntang.springboot.util.BackFrontPage;
 
@@ -18,13 +18,14 @@ import com.johntang.springboot.util.BackFrontPage;
 
 @Service
 public class EventService {
-	
+
 	@Autowired
-	EventMapper eventMappper;
-	
+	private EventMapper eventMapper;
+
 	@Autowired
-	RoleMapper roleMapper;
-	
+	private RoleMapper roleMapper;
+
+
 	//创建赛事
 	public int createEvent(Event event) {
 		if(event.getCreateDate().before(event.getSignUpBeginDate())) {
@@ -37,14 +38,14 @@ public class EventService {
 		if(event.getAvailable() != -1 && event.getAvailable() != 0) {
 			event.setAvailable(-1);
 		}
-		
-		return eventMappper.createEvent(event);	
+
+		return eventMapper.createEvent(event);
 	}
 	
 	//获取审核中赛事列表
 	public BackFrontPage getUnAvailableEventByPage(Integer currentPageNum,Integer pageSize) {
 		Integer totalPageNum; //总页数
-		Integer totalNum = eventMappper.getTotalUnAvailableEventNum(); //UnAvailableEvent总数
+		Integer totalNum = eventMapper.getTotalUnAvailableEventNum(); //UnAvailableEvent总数
 		
 		if (totalNum % pageSize == 0) {
 			totalPageNum = totalNum / pageSize;
@@ -57,20 +58,20 @@ public class EventService {
 			return new BackFrontPage(pageSize, totalPageNum, currentPageNum, null);
 		}
 		
-		List<Event> currentPageList = eventMappper.getUnAvailableEventByPage(currentPageNum, pageSize);
+		List<Event> currentPageList = eventMapper.getUnAvailableEventByPage(currentPageNum, pageSize);
 		
 		return new BackFrontPage(pageSize, totalPageNum, currentPageNum, currentPageList);
 	}
 	
 	//审核赛事
-	public int reviewEvent(Integer eventId,Integer available,String comment) {
+	public int reviewEvent(Integer eventId,Integer available) {
 		
 		//检验available合法性
 		if(available != -1&& available != 1) return 0;
 		
-		if (eventMappper.setEventAvailableById(eventId, available) == 1) {
+		if (eventMapper.setEventAvailableById(eventId, available) == 1) {
 			//如果赛事通过则设置赛事管理员权限
-			roleMapper.addUserIdAndRoleId(eventMappper.findEventByEventId(eventId).getCreatorUid(),4);
+			roleMapper.addUserIdAndRoleId(eventMapper.findEventByEventId(eventId).getCreatorUid(),4);
 			return 1;
 		}else {
 			return 0;

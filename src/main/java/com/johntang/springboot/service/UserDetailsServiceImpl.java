@@ -20,7 +20,7 @@ import com.johntang.springboot.pojo.User;
  */
 
 @Service
-public class UserDetailService implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService{
 	
 	@Autowired
 	private UserMapper UserMapper;
