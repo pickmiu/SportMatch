@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johntang.springboot.mapper.EventMapper" >
+
+    <insert id="createEvent" parameterType="com.johntang.springboot.pojo.Event">
+         INSERT INTO
+         		event 
+         		( available, status, creatorUid, signUpBeginDate, signUpEndDate, startDate, name, rule, expenses, maxPlayer, hostName, hostAddress, bonusRule, eligibility, remark) 
+         VALUES 
+         		( #{available}, #{status}, #{creatorUid}, #{signUpBeginDate,jdbcType=TIMESTAMP}, #{signUpEndDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{name}, #{rule}, #{expenses}, #{maxPlayer}, #{hostName}, #{hostAddress}, #{bonusRule}, #{eligibility}, #{remark})
+    </insert>
+    
+    <select id="getTotalUnAvailableEventNum" resultType="java.lang.Integer">
+    	SELECT COUNT(*)
+    	FROM
+    		event
+    	WHERE 
+    		available = 0 
+    </select>
+    
+    <select id="getUnAvailableEventByPage" resultType="com.johntang.springboot.pojo.Event">
+    	SELECT *
+    	FROM 
+    		event
+    	WHERE
+    		available = 0
+    	LIMIT
+    		${(currentPageNum-1)*pageSize}, ${pageSize}
+    </select>
+    
+    <update id="setEventAvailableById">
+    	UPDATE
+    		event
+    	SET
+    		available = #{available}
+    	WHERE
+    		id = #{id}
+    </update>
+    
+    <select id="findEventByEventId" resultType="com.johntang.springboot.pojo.Event">
+    	SELECT *
+    	FROM
+    		event
+    	WHERE
+    		id = #{eventId}
+    </select>
+    
+</mapper>

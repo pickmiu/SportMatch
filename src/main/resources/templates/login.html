@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>登录</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/register-login.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/slide.css">
+</head>
+<body>
+<div id="box"></div>
+<div class="cent-box">
+	<div class="cent-box-header">
+		<h2 class="sub-title">生活热爱分享</h2>
+	</div>
+
+	<div class="cont-main clearfix">
+		<div class="index-tab">
+			<div class="index-slide-nav">
+				<a href="login.html" class="active">登录</a>
+				<a href="register.html">注册</a>
+				<div class="slide-bar"></div>				
+			</div>
+		</div>
+
+		<div class="login form">
+			<div class="group">
+				<div class="group-ipt email">
+					<input type="text" name="email" id="email" class="ipt" placeholder="请输入邮箱地址" required>
+				</div>
+				<div class="group-ipt password">
+					<input type="password" name="password" id="password" class="ipt" placeholder="输入您的登录密码" required>
+				</div>
+			</div>
+		</div>
+		
+		<div id="demo">
+		<div id="slider">
+		<div id="slider_bg">
+		</div>
+		<span id="label">&gt;&gt;</span> <span id="labelTip">拖动滑块验证</span>
+		</div>
+		</div>
+
+		<div class="button">
+			<button type="submit" class="login-btn register-btn" id="button">登录</button>
+		</div>
+
+		<div class="remember clearfix">
+			<label class="remember-me"><span class="icon"><span class="zt"></span></span><input type="checkbox" name="remember-me" id="remember-me" class="remember-mecheck" checked>记住我</label>
+			<label class="forgot-password">
+				<a href="#">忘记密码？</a>
+			</label>
+		</div>
+	</div>
+</div>
+
+<div class="footer">
+	<p> smartofme.club </p>
+	<p></p>
+</div>
+
+<script src='/static/js/particles.js' type="text/javascript"></script>
+<script src='/static/js/background.js' type="text/javascript"></script>
+<script src='/static/js/jquery.min.js' type="text/javascript"></script>
+<script src='/static/js/layer/layer.js' type="text/javascript"></script>
+<script src='/static/js/slide.js' type="text/javascript"></script>
+<script>
+	$("#button").click(function(){
+			var email = $("#email").val();
+			var password = $("#password").val();
+			var verify = $("#verify").val();
+			if(email == '')
+			{
+				alert('请输入邮箱地址');
+			}
+			else if(password == '')
+			{
+				alert('请输入密码');
+			}
+			else{
+				 var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+				 isOK = reg.test(email);
+				 if(!isOK){
+					 alert('邮箱格式不正确');
+					 $("#email").val()='';
+				 }
+				 else{
+					 var data ="username="+email+"&password="+password;
+					 $.ajax({
+					 type: 'POST',
+					 url: '/login',
+					 data: data,
+					 dataType: 'json',
+					 success: function(data){
+					 	if(data.status == 401)
+					 	{
+					 		alert("用户名或密码错误");
+							email='';
+							password='';
+							console.log(data);
+					 	}
+					 	else
+					 	{
+					 		console.log(data);
+							 alert("登录成功");
+							 window.location.href="/user/123";
+					 	}
+					 },
+					 });
+				}
+			}
+		 });
+		$("#remember-me").click(function(){
+			var n = document.getElementById("remember-me").checked;
+			if(n){
+				$(".zt").show();
+			}else{
+				$(".zt").hide();
+			}
+		})
+</script>
+</body>
+</html>

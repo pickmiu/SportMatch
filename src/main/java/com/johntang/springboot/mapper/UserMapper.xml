@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.johntang.springboot.mapper.UserMapper" >
+ 
+    <select id="findUserByUsername" resultType="com.johntang.springboot.pojo.User">
+        SELECT 
+        		* 
+        FROM 
+        		user 
+        WHERE 
+        		username = #{username};
+    </select>
+ 
+    <insert id="addUser">
+         INSERT 
+         		user 
+         		(username,password,nickname) 
+         VALUES 
+         		(#{username},#{password},#{nickname})
+    </insert>
+    
+    <update id="changePassword">
+    	 UPDATE 
+    	 		user
+    	 SET
+    	  		password = #{password}
+    	 WHERE
+    	 		username = #{username}
+   	</update>
+</mapper>
