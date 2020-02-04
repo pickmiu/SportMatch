@@ -25,7 +25,6 @@ public class EventService {
 	@Autowired
 	private RoleMapper roleMapper;
 
-
 	//创建赛事
 	public int createEvent(Event event) {
 		if(event.getCreateDate().before(event.getSignUpBeginDate())) {

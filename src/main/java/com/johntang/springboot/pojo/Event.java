@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Event{
 	
 	private Integer id;
+	private Integer type;
 	private Integer available;  //是否通过审核
 	private Integer status;    // -1未开始 0报名中 1已开始 2已结束
 	private Integer creatorUid;
@@ -138,5 +139,12 @@ public class Event{
 	public void setAvailable(Integer available) {
 		this.available = available;
 	}
-	
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
 }
