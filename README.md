@@ -11,6 +11,8 @@
 | available | 赛事是否通过 | 用于赛事的审核 | int(1) | notNull |
 | status | 赛事的状态 | 说明赛事的状态 | int(1) | -1未开始 0报名中 1已开始 2已结束、notNull |
 | creatorUid | 创建者uid | 无 | int(10) | notNull |
+| identifyType | 验证类型 | 用于赛事对参赛人员的验证 | int(1) | 0不需要验证 1需要密码 2需要人工审核 、 notNull |
+| password | 验证密码 | 用于输入验证密码 | varchar(255) | 无 |
 | createDate | 创建时间 | 无 | timestamp | yyyy-MM-dd HH:mm:ss、notNull |
 | signUpBeginDate | 报名开始时间 | 无 | timestamp | 同上 |
 | signUpEndDate | 报名结束时间 | 无 | timestamp | 同上 |
@@ -29,7 +31,7 @@
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | notNull |
 | adminUid | 用户id | 无 | int(10) | notNull |
-### event_player表 （赛事与选手对应表）
+### player表 （赛事与选手对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | notNull |
@@ -39,7 +41,7 @@
 | weight | 权重 | 用于判断选手的排位 | int(10) | notNull，默认0 |
 | identifyMsg | 验证信息 | 选手报名时验证的信息 | varchar(255) | 无 |
 | submitDate | 提交时间 | 选手提交报名信息的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、默认当前时间 |
-### event_referee表 (赛事与餐盘对应表)
+### referee表 (赛事与餐盘对应表)
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | notNull |
