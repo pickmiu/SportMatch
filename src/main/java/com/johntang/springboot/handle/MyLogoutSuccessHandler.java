@@ -25,8 +25,7 @@ import com.johntang.springboot.util.BackFrontMessage;
 public class MyLogoutSuccessHandler implements LogoutSuccessHandler{
 
 	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-			throws IOException, ServletException {
+	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		BackFrontMessage authMessage = new BackFrontMessage(500, "退出登录成功", null);
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonData = objectMapper.writeValueAsString(authMessage);

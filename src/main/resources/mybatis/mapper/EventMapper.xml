@@ -4,26 +4,51 @@
 
     <insert id="createEvent" parameterType="com.johntang.springboot.pojo.Event">
          INSERT INTO
-         		event 
-         		( available, status, creatorUid, signUpBeginDate, signUpEndDate, startDate, name, rule, expenses, maxPlayer, hostName, hostAddress, bonusRule, eligibility, remark) 
+         	event
+         	( type, identifyType, password, available, status, creatorUid, signUpBeginDate, signUpEndDate, startDate, name, rule, expenses, maxPlayer, hostName, hostAddress, bonusRule, eligibility, remark)
          VALUES 
-         		( #{available}, #{status}, #{creatorUid}, #{signUpBeginDate,jdbcType=TIMESTAMP}, #{signUpEndDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{name}, #{rule}, #{expenses}, #{maxPlayer}, #{hostName}, #{hostAddress}, #{bonusRule}, #{eligibility}, #{remark})
+         	( #{type}, #{identifyType}, #{password}, #{available}, #{status}, #{creatorUid}, #{signUpBeginDate,jdbcType=TIMESTAMP}, #{signUpEndDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{name}, #{rule}, #{expenses}, #{maxPlayer}, #{hostName}, #{hostAddress}, #{bonusRule}, #{eligibility}, #{remark})
     </insert>
-    
-    <select id="getTotalUnAvailableEventNum" resultType="java.lang.Integer">
+
+	<insert id="createPlayer">
+		INSERT INTO
+			player
+			( eventId, playerUid, isPassed, isPayed, weight, identifyMsg)
+		VALUES
+		    ( #{eventId}, #{playerUid}, #{isPassed}, #{isPayed}, #{weight}, #{identifyMsg})
+	</insert>
+
+	<insert id="createReferee">
+		INSERT INTO
+			referee
+		    ( eventId, refereeUid, isPassed, identifyMsg)
+		VALUES
+			( #{eventId}, #{refereeUid}, #{isPassed}, #{identifyMsg})
+	</insert>
+
+    <insert id="createEventAdmin">
+		INSERT INTO
+			event_admin
+			( eventId, adminUid)
+		VALUES
+			( #{eventId},#{adminUid})
+	</insert>
+
+
+    <select id="getTotalUnReviewEventNum" resultType="java.lang.Integer">
     	SELECT COUNT(*)
     	FROM
     		event
     	WHERE 
-    		available = 0 
+    		available = -1
     </select>
     
-    <select id="getUnAvailableEventByPage" resultType="com.johntang.springboot.pojo.Event">
+    <select id="getUnReviewEventByPage" resultType="com.johntang.springboot.pojo.Event">
     	SELECT *
     	FROM 
     		event
     	WHERE
-    		available = 0
+    		available = -1
     	LIMIT
     		${(currentPageNum-1)*pageSize}, ${pageSize}
     </select>
@@ -36,13 +61,148 @@
     	WHERE
     		id = #{id}
     </update>
-    
-    <select id="findEventByEventId" resultType="com.johntang.springboot.pojo.Event">
+
+	<update id="setIsPassedByEventIdAndPlayerUid">
+		UPDATE
+			player
+		SET
+			isPassed = #{isPassed}
+		WHERE
+			eventId = #{eventId}, playUid = #{playerUid}
+	</update>
+
+	<update id="setIsPayedByEventIdAndPlayerUid">
+		UPDATE
+			player
+		SET
+			isPayed = #{isPayed}
+		WHERE
+			eventId = #{eventId}, playUid = #{playerUid}
+	</update>
+
+	<update id="setIsPassedByEventIdAndRefereeUid">
+		UPDATE
+			player
+		SET
+			isPassed = #{isPassed}
+		WHERE
+			eventId = #{eventId}, playUid = #{refereeUid}
+	</update>
+
+	<update id="setIsPayedByEventIdAndRefereeUid">
+		UPDATE
+			player
+		SET
+			isPayed = #{isPayed}
+		WHERE
+			eventId = #{eventId}, playUid = #{refereeUid}
+	</update>
+
+	<select id="findEventByEventId" resultType="com.johntang.springboot.pojo.Event">
     	SELECT *
     	FROM
     		event
     	WHERE
     		id = #{eventId}
     </select>
-    
+
+	<select id="getRegisteringEventByPage" resultType="com.johntang.springboot.pojo.Event">
+		SELECT *
+		FROM
+		    event
+		WHERE
+			available = 1 and status = 0
+		LIMIT
+			${(currentPageNum-1)*pageSize}, ${pageSize}
+	</select>
+
+	<select id="getUnStartEventByPage" resultType="com.johntang.springboot.pojo.Event">
+		SELECT *
+		FROM
+			event
+		WHERE
+			available = 1 and status = 1
+		LIMIT
+		    ${(currentPageNum-1)*pageSize}, ${pageSize}
+	</select>
+
+	<select id="getStartEventByPage" resultType="com.johntang.springboot.pojo.Event">
+		SELECT *
+		FROM
+			event
+		WHERE
+			available = 1 and status = 2
+		LIMIT
+		    ${(currentPageNum-1)*pageSize}, ${pageSize}
+	</select>
+
+	<select id="getTotalRegisteringEventNum" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+    	FROM
+    		event
+    	WHERE
+    		available = 1 and status = 0
+	</select>
+
+	<select id="getTotalUnStartEventNum" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+    	FROM
+    		event
+    	WHERE
+    		available = 1 and status = 1
+	</select>
+
+	<select id="getTotalStartEventNum" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+    	FROM
+    		event
+    	WHERE
+    		available = 1 and status = 2
+	</select>
+
+	<select id="getUnReviewPlayerByPage" resultType="com.johntang.springboot.pojo.Player">
+		SELECT *
+		FROM
+			player
+		WHERE
+			isPassed = -1 OR isPay = 0
+		LIMIT
+		    ${(currentPageNum-1)*pageSize}, ${pageSize}
+	</select>
+
+	<select id="getTotalUnReviewPlayerNum" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+    	FROM
+    		player
+    	WHERE
+    		isPassed = -1 OR isPay = 0
+	</select>
+
+	<select id="getUnReviewRefereeByPage" resultType="com.johntang.springboot.pojo.Referee">
+		SELECT *
+		FROM
+			referee
+		WHERE
+			isPassed = -1
+		LIMIT
+		    ${(currentPageNum-1)*pageSize}, ${pageSize}
+	</select>
+
+	<select id="getTotalUnReviewRefereeNum" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+    	FROM
+    		referee
+    	WHERE
+    		isPassed = -1
+	</select>
+
+	<select id="getEAdminByEventId" resultType="com.johntang.springboot.pojo.EAdmin">
+		SELECT *
+		FROM
+			event_admin
+		WHERE
+			eventId = #{eventId}
+	</select>
+
+
 </mapper>

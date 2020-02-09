@@ -21,7 +21,7 @@ public class BackFrontPage {
 		this.currentPageNum=currentPageNum;
 		this.totalPageNum=totalPageNum;
 	}
-	
+
 	public List<?> getCurrentPageList() {
 		return currentPageList;
 	}

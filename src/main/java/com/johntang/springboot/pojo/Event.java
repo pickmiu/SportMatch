@@ -2,6 +2,7 @@ package com.johntang.springboot.pojo;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @Description 赛事实体
@@ -12,10 +13,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Event{
 	
 	private Integer id;
-	private Integer type;
-	private Integer available;  //是否通过审核
-	private Integer status;    // -1未开始 0报名中 1已开始 2已结束
+	private Integer type;       //赛事种类
+	private Integer available;  //是否通过审核 -1提交待审核 0未通过审核 1通过审核
+	private Integer status;    // -1未开始报名 0开始报名中 1报名结束未开始比赛 2已开始比赛 3比赛已结束
 	private Integer creatorUid;
+
+	private Integer identifyType; //0不需要验证 1需要密码 2需要人工审核
+	private String password; //验证密码
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
@@ -146,5 +150,22 @@ public class Event{
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Integer getIdentifyType() {
+		return identifyType;
+	}
+
+	public void setIdentifyType(Integer identifyType) {
+		this.identifyType = identifyType;
 	}
 }

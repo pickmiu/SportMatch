@@ -25,8 +25,7 @@ import com.johntang.springboot.util.BackFrontMessage;
 public class MyAuthenticationFailureHandler implements AuthenticationFailureHandler {
 	
 	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException, ServletException {
+	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		BackFrontMessage authMessage = new BackFrontMessage(500, "登录失败", null);
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonData = objectMapper.writeValueAsString(authMessage);
