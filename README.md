@@ -29,13 +29,13 @@
 ### event_admin表 （赛事与赛事管理员对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| eventId | 赛事id | 无 | int(10) | notNull |
-| adminUid | 用户id | 无 | int(10) | notNull |
+| eventId | 赛事id | 无 | int(10) | notNull,主键 |
+| adminUid | 用户id | 无 | int(10) | notNull,主键 |
 ### player表 （赛事与选手对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| eventId | 赛事id | 无 | int(10) | notNull |
-| playerUid | 选手uid | 无 | int(10) | notNull |
+| eventId | 赛事id | 无 | int(10) | notNull,主键|
+| playerUid | 选手uid | 无 | int(10) | notNull，主键|
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
 | isPayed | 是否缴费 | 无 | int(1) | notNull |
 | weight | 权重 | 用于判断选手的排位 | int(10) | notNull，默认0 |
@@ -44,8 +44,8 @@
 ### referee表 (赛事与餐盘对应表)
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| eventId | 赛事id | 无 | int(10) | notNull |
-| refereeUid | 裁判uid | 无 | int(10) | notNull |
+| eventId | 赛事id | 无 | int(10) | notNull，主键 |
+| refereeUid | 裁判uid | 无 | int(10) | notNull，主键 |
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
 | identifyMsg | 验证信息 | 裁判报名时验证的信息 | varchar(255) | 无 |
 | submitDate | 提交时间 | 裁判提交报名信息的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、默认当前时间 |
