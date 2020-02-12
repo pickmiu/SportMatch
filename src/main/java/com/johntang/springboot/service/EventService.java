@@ -1,5 +1,6 @@
 package com.johntang.springboot.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class EventService {
 
 
 	//创建赛事
-	public int createEvent(Event event) {
+	public BackFrontMessage createEvent(Event event) {
 		if(event.getCreateDate().before(event.getSignUpBeginDate())) {
 			event.setStatus(-1);
 		}else {
@@ -38,7 +39,11 @@ public class EventService {
 		//设置赛事为待审核状态
 		event.setAvailable(-1);
 
-		return eventMapper.createEvent(event);
+		if(eventMapper.createEvent(event) == 1) {
+			return new BackFrontMessage(200, "赛事添加成功", null);
+		}else {
+			return new BackFrontMessage(500, "赛事添加失败", null);
+		}
 	}
 
 

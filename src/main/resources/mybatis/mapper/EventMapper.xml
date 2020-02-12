@@ -165,7 +165,7 @@
 		FROM
 			player
 		WHERE
-			isPassed = -1 OR isPay = 0
+			isPassed = -1 OR isPayed = 0
 		LIMIT
 		    ${(currentPageNum-1)*pageSize}, ${pageSize}
 	</select>
@@ -175,7 +175,7 @@
     	FROM
     		player
     	WHERE
-    		isPassed = -1 OR isPay = 0
+    		isPassed = -1 OR isPayed = 0
 	</select>
 
 	<select id="getUnReviewRefereeByPage" resultType="com.johntang.springboot.pojo.Referee">

@@ -2,10 +2,7 @@ package com.johntang.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.johntang.springboot.pojo.Event;
 import com.johntang.springboot.pojo.User;
 import com.johntang.springboot.service.EventService;
@@ -26,17 +23,15 @@ public class EventController {
 	//用户发布赛事
 	@PostMapping("/user/createEvent")
 	public BackFrontMessage createEvent(Authentication authentication,@RequestBody Event event) {
+		//设置赛事创建者
 		event.setCreatorUid(((User)authentication.getPrincipal()).getId());
-		
-		if(eventService.createEvent(event) == 1) {
-			return new BackFrontMessage(200, "添加成功", null);
-		}else {
-			return new BackFrontMessage(500, "添加失败", null);
-		}
+		//保证不能有重名赛事检测
+		//未完成
+		return eventService.createEvent(event);
 	}
 	
 	//总赛事管理员获得未通过赛事的列表
-	@PostMapping("/fe_admin/getUnAvailableEvent")
+	@GetMapping("/fe_admin/unAvailableEvent")
 	public BackFrontMessage getUnAvailableEventByPage(@RequestParam Integer currentPageNum,@RequestParam Integer pageSize) {
 		return eventService.getUnAvailableEventByPage(currentPageNum, pageSize);
 	}
@@ -54,7 +49,7 @@ public class EventController {
 	
 	//主界面
 	//获取指定状态的赛事
-	@PostMapping("/getEvent")
+	@GetMapping("/event")
 	public BackFrontMessage getEvent(@RequestParam Integer status,@RequestParam Integer currentPageNum,@RequestParam Integer pageSize){
 		return eventService.getEventByPage(status, currentPageNum, pageSize);
 	}
@@ -68,23 +63,21 @@ public class EventController {
 	}
 
 	//赛事管理员获得未通过的选手、裁判
-	@PostMapping("/e_admin/getUnAvailablePerson")
+	@GetMapping("/e_admin/unAvailable")
 	public BackFrontMessage getUnAvailablePerson(@RequestParam Integer eventId,@RequestParam Integer registerType,@RequestParam Integer currentPageNum,@RequestParam Integer pageSize){
 		return eventService.getUnAvailablePerson(eventId,registerType,currentPageNum,pageSize);
 	}
 
-	//赛事管理员审核未通过的选手
+	//赛事管理员审核未审核的选手
 	@PostMapping("/e_admin/reviewPlayer")
 	public BackFrontMessage reviewPlayer(@RequestParam Integer eventId,@RequestParam Integer playerUid,@RequestParam Integer isPassed,@RequestParam Integer isPayed,@RequestParam String comment) {
 		return eventService.reviewPlayer(eventId,playerUid,isPassed,isPayed);
 	}
 
-	//赛事管理员审核未通过的裁判
+	//赛事管理员审核未审核的裁判
 	@PostMapping("/e_admin/reviewReferee")
 	public BackFrontMessage reviewReferee(@RequestParam Integer eventId,@RequestParam Integer refereeUid,@RequestParam Integer isPassed,@RequestParam String comment){
 		return eventService.reviewReferee(eventId,refereeUid,isPassed);
 	}
-
-
 
 }
