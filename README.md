@@ -68,5 +68,6 @@
 | countNum | 比赛场次场地序号 | 无 | int(8) | notNull |
 | isStart | 比赛场次是否开始 | 无 | int(1) | notNull，默认为0 |
 | isFinish | 比赛场次是否结束 | 无 | int(1) | notNUll，默认为0 |
+| winnnerUid | 获胜者的id | 无 | int(10) | 无 |
 | createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
 
