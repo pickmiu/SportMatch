@@ -37,14 +37,18 @@
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | notNull,主键|
+| joinType | 报名类型 | 比如：单打双打或者其他项目 | int(10) | notNull,主键 |
 | playerUid | 选手uid | 无 | int(10) | notNull，主键|
+| number | 选手的号码 | 无 | int(2) | 无 |
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
 | isPayed | 是否缴费 | 无 | int(1) | notNull |
+| groupNum | 小组赛组号 | ABCDEF | varchar(1) | notNull,不是小组赛为0 |
+| teamId | 团队id | 用于几个人的队伍编号 | int(10) | notNull,不是队伍为0 |
 | weight | 权重 | 用于判断选手的排位 | int(10) | notNull，默认0 |
 | identifyMsg | 验证信息 | 选手报名时验证的信息 | varchar(255) | 无 |
 | submitDate | 最后提交时间 | 选手最近一次提交报名信息的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、更新时默认当前时间 |
 | createDate | 创建时间 | 选手第一次提交的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
-### referee表 (赛事与餐盘对应表)
+### referee表 (赛事与裁判对应表)
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | notNull，主键 |
@@ -53,13 +57,16 @@
 | identifyMsg | 验证信息 | 裁判报名时验证的信息 | varchar(255) | 无 |
 | submitDate | 最后提交时间 | 裁判最近一次提交报名信息的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、更新时默认当前时间 |
 | createDate | 创建时间 | 裁判第一次提交的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
-### baseball_schedule表 (网球赛事场次表)
+### baseball_single_schedule表 (网球赛事场次表)
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
+| id | 场次id | 无 | int(10) | notNull,主键 |
 | eventId | 赛事id | 无 | int(10) | notNull |
+| isDouble | 是否双打 | 无 | int(1）| notNull |
+| roundNum | 赛事的第几轮| 无 | int(10) | notNull |
 | startDate | 场次开始时间 | 无 | timestamp | yyyy-MM-dd HH:mm:ss、notNull |
-| playerAUid | 选手A的uid | 无 | int(10) | notNull |
-| playerBUid | 选手B的uid | 无 | int(10) | notNull |
+| playerAUid | 选手A(teamA)的uid | 无 | int(10) | notNull |
+| playerBUid | 选手B(teamB)的uid | 无 | int(10) | notNull |
 | refereeUid | 裁判uid | 无 | int(10) | notNull |
 | aWinRound | 选手A赢的局数 | 无 | int(2) | notNull,默认为0 |
 | bWinRound | 选手B赢的局数 | 无 | int(2) | notNull，默认为0 |
@@ -68,6 +75,6 @@
 | countNum | 比赛场次场地序号 | 无 | int(8) | notNull |
 | isStart | 比赛场次是否开始 | 无 | int(1) | notNull，默认为0 |
 | isFinish | 比赛场次是否结束 | 无 | int(1) | notNUll，默认为0 |
-| winnnerUid | 获胜者的id | 无 | int(10) | 无 |
+| winnnerId | 获胜者的id| 无 | int(10) | 无 |
 | createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
 
