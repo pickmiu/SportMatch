@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import com.johntang.springboot.pojo.Event;
 import com.johntang.springboot.pojo.User;
 import com.johntang.springboot.service.EventService;
-import com.johntang.springboot.util.BackFrontMessage;
+import com.johntang.springboot.pojo.BackFrontMessage;
 
 /**
  * @Description 赛事控制器，提供给前端的get，post接口

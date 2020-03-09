@@ -54,7 +54,7 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/register**","/static/**","/mail/**")
+			.antMatchers("/register**","/static/**","/mail/**","/openApi/**")
 			.permitAll()
 			.antMatchers("/user/**")
 			.access("hasAnyRole('USER','PLAYER','REFEREE','E_ADMIN','FE_ADMIN','S_ADMIN')")
@@ -72,7 +72,6 @@ public class MyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter
 			.authenticated()
 		.and()
 			.formLogin()
-			.loginPage("/login.html")
 			.loginProcessingUrl("/login")
 			.usernameParameter("username")
 			.passwordParameter("password")

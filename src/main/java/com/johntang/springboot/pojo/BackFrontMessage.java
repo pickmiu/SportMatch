@@ -1,4 +1,4 @@
-package com.johntang.springboot.util;
+package com.johntang.springboot.pojo;
 
 /**
  * @Description 用户登录操作时返回给前端的json

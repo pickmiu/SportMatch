@@ -1,8 +1,13 @@
 package com.johntang.springboot.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpSession;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.johntang.springboot.pojo.BackFrontMessage;
+import com.johntang.springboot.pojo.rabbitmq.MailMessage;
+import com.johntang.springboot.util.RandomUtil;
+import com.johntang.springboot.util.RedisUtil;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,65 +25,62 @@ import com.johntang.springboot.service.UserService;
 @RestController
 public class LoginController {
 	
-	@Autowired 
+	@Autowired
 	UserService userService;
 	
 	@Autowired
 	MailService mailService;
-	
-	//需要改进返回值
-	@PostMapping("/register")
-	public Map<String, Integer> register(@RequestParam("username") String username,
-            			   @RequestParam("password") String password,
-            			   @RequestParam("nickname") String nickname,
-            			   @RequestParam("code") int code,
-            			   HttpSession session) {
-		
-		Map<String, Integer> map = new HashMap<>();
-		try {
-			
-			String s=session.getAttribute("code").toString();
-			int sessionCode=Integer.parseInt(s);
-			
-			if(sessionCode == code) {
-					if(userService.addUser(username, password, nickname)==1) map.put("message", 3);
-					else map.put("message", 2);
+
+	@Autowired
+	RandomUtil randomUtil;
+
+	@Autowired
+	AmqpTemplate rabbitTemplate;
+
+	@Autowired
+	RedisUtil redisUtil;
+
+	//发送验证码
+	@PostMapping("/mail/sendVerifyCode")
+	public BackFrontMessage sendVerifyCode(@RequestParam String operationType,@RequestParam String mailAddress) {
+			//生成验证码
+			String verifyCode = randomUtil.generateSixRandomCode();
+			//存入redis 5分钟过期
+			if( !redisUtil.set(mailAddress,verifyCode,600) ){
+				return new BackFrontMessage(500,"验证码发送失败",null);
 			}
-			else map.put("message", 1);
-			
-		} catch (Exception e) {
-			
-			map.put("message", 0);
-			
+			//发送消息给mailserver
+			MailMessage mailMessage = new MailMessage(operationType,mailAddress,mailAddress,verifyCode);
+			rabbitTemplate.convertAndSend("mail",mailMessage);
+			return new BackFrontMessage(200,"验证码发送成功",null);
+	}
+
+	//验证验证码
+	@PostMapping("/openApi/confirmVerifyCode")
+	public BackFrontMessage confirmVerifyCode(@RequestParam String mailAddress,@RequestParam String verifyCode){
+		String redisVerifyCode = (String)redisUtil.get(mailAddress);
+		if (redisVerifyCode == null || !redisVerifyCode.equals(verifyCode)){
+			return new BackFrontMessage(500,"验证码错误",null);
+		}else{
+			return new BackFrontMessage(200,"验证码正确",null);
 		}
-		
-		return map;
 	}
-	
-	//没写完
-	@PostMapping("/forgetpassword")
-	public Map<String, Integer> forgetPassword(@RequestParam("username") String username,
-							@RequestParam("password") String password,
-							@RequestParam("code") int code,
-							HttpSession session){
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		return map;
+
+	//注册
+	@PostMapping("/register")
+	public BackFrontMessage register(@RequestParam String username,@RequestParam String password,@RequestParam String nickname,@RequestParam String verifyCode){
+		//验证验证码
+		String redisVerifyCode = (String)redisUtil.get(username);
+		if (redisVerifyCode == null || !redisVerifyCode.equals(verifyCode)){
+			return new BackFrontMessage(500,"验证码过期",null);
+		}
+
+		//添加用户
+		if(userService.addUser(username,password,nickname) == 1){
+			return new BackFrontMessage(200,"注册成功",null);
+		}else{
+			return new BackFrontMessage(500,"注册失败",null);
+		}
 	}
-	
-	//需要改进
-	@PostMapping("/mail")
-	public Map<String, Integer> mail(@RequestParam("email") String mailAddress,
-						@RequestParam("operation") String operation,HttpSession session) {
-		
-		int code = (int)((Math.random()*9+1)*100000);
-		
-		session.setAttribute("code",code);
-		
-		mailService.sendIdentityCode(mailAddress, operation, code);
-		
-		Map<String, Integer> map = new HashMap<>();
-		map.put("message", 4);
-		
-		return map;
-	}
+
 }

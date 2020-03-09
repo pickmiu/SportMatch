@@ -1,6 +1,5 @@
 package com.johntang.springboot.service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Iterator;
 import java.util.List;
 

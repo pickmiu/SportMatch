@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.johntang.springboot.util.BackFrontMessage;
+import com.johntang.springboot.pojo.BackFrontMessage;
 
 /** 
  * @Description 用户退出登录的处理类，用于处理退出登录时，服务端返回的内容

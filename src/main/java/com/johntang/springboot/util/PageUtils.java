@@ -1,4 +1,7 @@
 package com.johntang.springboot.util;
+import com.johntang.springboot.pojo.BackFrontMessage;
+import com.johntang.springboot.pojo.BackFrontPage;
+
 import	java.util.List;
 
 /**
@@ -11,7 +14,7 @@ import	java.util.List;
 
 public class PageUtils {
 
-    public static BackFrontMessage generateMessage(Integer totalNum,Integer currentPageNum,Integer pageSize,List<?> currentPageList){
+    public static BackFrontMessage generateMessage(Integer totalNum, Integer currentPageNum, Integer pageSize, List<?> currentPageList){
         Integer totalPageNum = CalculationUtils.calculateTotalPageNum(totalNum,pageSize);
 
         if(totalPageNum == 0){

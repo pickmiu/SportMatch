@@ -1,4 +1,4 @@
-package com.johntang.springboot.util;
+package com.johntang.springboot.pojo;
 
 import java.util.List;
 

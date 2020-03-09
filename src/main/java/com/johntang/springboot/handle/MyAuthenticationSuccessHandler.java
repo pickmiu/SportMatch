@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.johntang.springboot.pojo.User;
-import com.johntang.springboot.util.BackFrontMessage;
+import com.johntang.springboot.pojo.BackFrontMessage;
 
 /** 
  * @Description 用户认证（登录）成功时的处理类，用于处理用户登录成功时，服务端返回的内容
