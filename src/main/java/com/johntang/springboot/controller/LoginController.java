@@ -1,19 +1,15 @@
 package com.johntang.springboot.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.johntang.springboot.pojo.BackFrontMessage;
 import com.johntang.springboot.pojo.rabbitmq.MailMessage;
 import com.johntang.springboot.util.RandomUtil;
 import com.johntang.springboot.util.RedisUtil;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johntang.springboot.service.MailService;
 import com.johntang.springboot.service.UserService;
 
 /**
@@ -27,9 +23,6 @@ public class LoginController {
 	
 	@Autowired
 	UserService userService;
-	
-	@Autowired
-	MailService mailService;
 
 	@Autowired
 	RandomUtil randomUtil;
@@ -66,6 +59,12 @@ public class LoginController {
 		}
 	}
 
+	//判断昵称，用户名是否存在
+	@PostMapping("/openApi/isExist")
+	public BackFrontMessage isExist(@RequestParam String key,@RequestParam String value){
+		return userService.exist(key,value);
+	}
+
 	//注册
 	@PostMapping("/register")
 	public BackFrontMessage register(@RequestParam String username,@RequestParam String password,@RequestParam String nickname,@RequestParam String verifyCode){
@@ -77,9 +76,31 @@ public class LoginController {
 
 		//添加用户
 		if(userService.addUser(username,password,nickname) == 1){
+			//删除验证码信息
+			redisUtil.del(username);
+
 			return new BackFrontMessage(200,"注册成功",null);
 		}else{
 			return new BackFrontMessage(500,"注册失败",null);
+		}
+	}
+
+	//忘记或者修改密码
+	@PostMapping("/changePassword")
+	public BackFrontMessage changePassword(@RequestParam String username,@RequestParam String newPassword,@RequestParam String verifyCode){
+		//验证验证码
+		String redisVerifyCode = (String)redisUtil.get(username);
+		if (redisVerifyCode == null || !redisVerifyCode.equals(verifyCode)){
+			return new BackFrontMessage(500,"验证码过期",null);
+		}
+
+		if(userService.changePassword(username,newPassword) == 1){
+			//删除验证码信息
+			redisUtil.del(username);
+
+			return new BackFrontMessage(200,"修改成功",null);
+		}else {
+			return new BackFrontMessage(500,"修改失败或账户不存在",null);
 		}
 	}
 

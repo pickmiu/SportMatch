@@ -10,7 +10,15 @@
         WHERE 
         		username = #{username};
     </select>
- 
+    <select id="findUserByNickname" resultType="com.johntang.springboot.pojo.User">
+		SELECT
+				*
+		FROM
+				user
+		WHERE
+				nickname = #{nickname}
+	</select>
+
     <insert id="addUser">
          INSERT 
          		user 
