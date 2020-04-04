@@ -47,7 +47,7 @@
 | bonusRule | 奖励规则 | 比赛的奖励规则 | varchar(255) | 无 |
 | eligibility | 参赛资格 | 满足要求即能参加比赛 | varchar(255) | 无 | 
 | remark | 备注 | 用于填写以上未列出的项目 | varchar(255) | 无 |
-### event_CompetitionItems表 （赛事的比赛项目）
+### event_cptItem表 （赛事的比赛项目）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | 无 |
