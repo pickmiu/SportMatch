@@ -6,7 +6,7 @@
 ### user表 （用户表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| id | 用户的id | 无 | int(8) | 主键自增 |
+| uid | 用户的id | 无 | int(10) | 主键自增 |
 | username | 用户名 | 无 | varchar(255) | notnull |
 | password | 密码 | 无 | varchar(255) | notnull |
 | nickname | 昵称 | 无 | carchar(255) | notnull |
@@ -14,6 +14,7 @@
 ### user_detail (用户详细信息表)
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
+| uid | 用户的id | 无 | int(10) | 主键自增 |
 | realname | 真实姓名 | 无 | varchar(255) | notnull |
 | phoneNumber | 手机号码 | 无 | int(8) | notnull |
 | identityNumber | 身份证号 | 无 | varchar(255)) | notnull |
@@ -27,7 +28,7 @@
 ### event表 （赛事的基本信息）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| id | 赛事的id | 标识每一个赛事 | int(10) | 主键自增、notNull |
+| eventId | 赛事的id | 标识每一个赛事 | int(10) | 主键自增、notNull |
 | type | 赛事的种类 | 说明赛事的类型 | int(10) | 比如：1网球2篮球、notNull |
 | available | 赛事是否通过 | 用于赛事的审核 | int(1) | -1提交待审核 0未通过审核 1通过审核、notNull |
 | status | 赛事的状态 | 说明赛事的状态 | int(1) | -1未开始报名 0开始报名中 1报名结束未开始比赛 2已开始比赛 3比赛已结束、notNull |
@@ -56,6 +57,7 @@
 | itemName | 项目名称 | 无 | int（8）| 无 |
 | ageLimit | 年龄限制 | 无 | int(8) | 无 |
 | sexLimit | 性别限制 | 无 | varchar(255) | 无 |
+| createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
 ### event_cptItem_player表 （赛事比赛项目与选手对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
@@ -65,7 +67,8 @@
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
 | groupNum | 小组赛组号 | ABCDEF | varchar(1) | notNull,不是小组赛为0 |
 | integral | 积分 | 用于判断选手的排位 | int(10) | notNull，默认0 |
-### event_cptItem_group表 （赛事比赛项目与队伍对应表）
+| createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
+### event_cptItem_team表 （赛事比赛项目与队伍对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | eventId | 赛事id | 无 | int(10) | 无 |
@@ -74,12 +77,21 @@
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
 | groupNum | 小组赛组号 | ABCDEF | varchar(1) | notNull,不是小组赛为0 |
 | integral | 积分 | 用于判断队伍的排位 | int(10) | notNull，默认0 |
-### group_player （队伍选手对应表）
+| createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
+### team (队伍表)
+| 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
+| --- | --- | --- | --- | ---- |
+| teamId | 队伍id | 无 | int(8) | 主键,notnull |
+| teamName | 队伍昵称 | 无 | vachar(255) | notnull |
+| creatorUid | 创建者uid | 无 | int(10) | notnull |
+| createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
+### team_player （队伍选手对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
 | teamId | 团队id | 无 | int(10) | notnull |
-| role | 角色 | 队伍中的角色 | int(1) | notnull,1队长0成员，队长有操作权限 |
 | playerUid | 选手uid | 无 | int(10) | notNull |
+| role | 角色 | 队伍中的角色 | int(1) | notnull,1队长0成员，队长有操作权限 |
+| createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
 ### event_admin表 （赛事与赛事管理员对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
@@ -98,6 +110,17 @@
 | identifyMsg | 验证信息 | 选手报名时验证的信息 | varchar(255) | 无 |
 | submitDate | 最后提交时间 | 选手最近一次提交报名信息的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、更新时默认当前时间 |
 | createDate | 创建时间 | 选手第一次提交的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
+### team表 （赛事与队伍对应表）
+| 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
+| --- | --- | --- | --- | ---- |
+| eventId | 赛事id | 无 | int(10) | notNull,主键|
+| teamId | 队伍id | 无 | int(10) | notNull，主键|
+| number | 队伍的号码 | 无 | int(2) | 无 |
+| isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
+| isPayed | 是否缴费 | 无 | int(1) | notNull |
+| identifyMsg | 验证信息 | 队伍报名时验证的信息 | varchar(255) | 无 |
+| submitDate | 最后提交时间 | 队伍最近一次提交报名信息的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、更新时默认当前时间 |
+| createDate | 创建时间 | 队伍第一次提交的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
 ### referee表 (赛事与裁判对应表)
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
