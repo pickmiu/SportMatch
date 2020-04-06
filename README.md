@@ -48,30 +48,28 @@
 | bonusRule | 奖励规则 | 比赛的奖励规则 | varchar(255) | 无 |
 | eligibility | 参赛资格 | 满足要求即能参加比赛 | varchar(255) | 无 | 
 | remark | 备注 | 用于填写以上未列出的项目 | varchar(255) | 无 |
-### event_cptItem表 （赛事的比赛项目）
+### item表 （赛事的比赛项目）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
+| itemId | 项目id | 无 | int(8) | 主键，自增 |
 | eventId | 赛事id | 无 | int(10) | 无 |
-| itemId | 项目id | 无 | int(8) | 无 |
 | unit | 单位 | 每个队伍人数的多少 | int(1) | notnull、1个人、1以上团体 |
 | itemName | 项目名称 | 无 | int（8）| 无 |
 | ageLimit | 年龄限制 | 无 | int(8) | 无 |
 | sexLimit | 性别限制 | 无 | varchar(255) | 无 |
 | createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
-### event_cptItem_player表 （赛事比赛项目与选手对应表）
+### item_player表 （赛事比赛项目与选手对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| eventId | 赛事id | 无 | int(10) | 无 |
 | itemId | 项目id | 无 | int(8) | 无 |
 | playerUid | 选手uid | 无 | int(10) | 无|
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
 | groupNum | 小组赛组号 | ABCDEF | varchar(1) | notNull,不是小组赛为0 |
 | integral | 积分 | 用于判断选手的排位 | int(10) | notNull，默认0 |
 | createDate | 创建时间 | 创建的时间 | timestamp | yyyy-MM-dd HH:mm:ss、notNull、创建时默认当前时间 |
-### event_cptItem_team表 （赛事比赛项目与队伍对应表）
+### item_team表 （赛事比赛项目与队伍对应表）
 | 字段 | 字段的名称 | 描述 | 字段的类型 | 备注 |
 | --- | --- | --- | --- | ---- |
-| eventId | 赛事id | 无 | int(10) | 无 |
 | itemId | 项目id | 无 | int(8) | 无 |
 | teamId | 团队id | 无 | int(10) | 无|
 | isPassed | 是否通过审核 | 是否通过赛事管理员审核 | int(1) | notNull |
